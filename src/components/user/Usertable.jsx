@@ -15,6 +15,7 @@ const UserTable = () => {
     const [reportingUser, setReportingUser] = useState(null);
     const [reportText, setReportText] = useState("");
     const [submittingReport, setSubmittingReport] = useState(false);
+    const [activeTab, setActiveTab] = useState("all");
 
     useEffect(() => {
         const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
@@ -116,6 +117,35 @@ const UserTable = () => {
     return (
         <div className="table-container">
             <h2 style={{ color: "#99DEFE" }}>All Users (Live)</h2>
+            <div style={{ marginBottom: "16px" }}>
+                <button
+                    onClick={() => setActiveTab("all")}
+                    style={{
+                        padding: "8px 16px",
+                        background: activeTab === "all" ? "#3A6DE8" : "#f0f0f0",
+                        color: activeTab === "all" ? "#fff" : "#000",
+                        border: "none",
+                        borderRadius: "6px",
+                        marginRight: "8px",
+                        cursor: "pointer"
+                    }}
+                >
+                    All Users
+                </button>
+                <button
+                    onClick={() => setActiveTab("completed")}
+                    style={{
+                        padding: "8px 16px",
+                        background: activeTab === "completed" ? "#3A6DE8" : "#f0f0f0",
+                        color: activeTab === "completed" ? "#fff" : "#000",
+                        border: "none",
+                        borderRadius: "6px",
+                        cursor: "pointer"
+                    }}
+                >
+                    Completed Users
+                </button>
+            </div>
             <table className="user-table">
                 <thead>
                     <tr>
@@ -130,7 +160,7 @@ const UserTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user) => (
+                    {(activeTab === "all" ? users : users.filter(user => user.status === "completed")).map((user) => (
                         <tr key={user.id}>
                             <td>{user.email || "-"}</td>
                             <td>{user.modelNumber || "-"}</td>
@@ -155,7 +185,7 @@ const UserTable = () => {
                                         <option value="completed">Completed</option>
                                     </select>
                                 ) : (
-                                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "6px", justifyContent: "space-between" }}>
                                         {getStatusBadge(user.status)}
                                         <button
                                             onClick={() => setEditingUserId(user.id)}
