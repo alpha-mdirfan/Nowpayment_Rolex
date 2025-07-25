@@ -48,9 +48,9 @@ const Navbar = () => {
                     margin: 0,
                     // padding: 0,
                 }}>
-                    <img src='../../img/logo4.png'
+                    <img src='../../img/Rolex_logo.png'
                         style={{
-                            width: 30,
+                            width: 50,
                         }} alt='' />
                 </Link>
                 <span style={{
